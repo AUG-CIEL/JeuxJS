@@ -33,9 +33,10 @@ exp.ws('/echo', function (ws, req) {
         req.connection.remoteAddress, req.connection.remotePort);
 
     ws.on('message', function (message) {
+        message = ws._socket._peername.address  + ' : ' + message; 
         console.log('De %s %s, message :%s', req.connection.remoteAddress,
             req.connection.remotePort, message);
-        ws.send(message);
+        aWss.broadcast(message);
     });
 
     ws.on('close', function (reasonCode, description) {
@@ -51,3 +52,22 @@ var portServ = 80;
 exp.listen(portServ, function () {
     console.log('Serveur en ecoute');
 }); 
+
+/*  ****************** Broadcast clients WebSocket  **************   */
+var aWss = expressWs.getWss('/echo');
+var WebSocket = require('ws');
+aWss.broadcast = function broadcast(data) {
+    console.log("Broadcast aux clients navigateur : %s", data);
+    aWss.clients.forEach(function each(client) {
+        if (client.readyState == WebSocket.OPEN) {
+            client.send(data, function ack(error) {
+                console.log("    -  %s-%s", client._socket.remoteAddress,
+                    client._socket.remotePort);
+                if (error) {
+                    console.log('ERREUR websocket broadcast : %s', error.toString());
+                }
+
+            });
+        }
+    });
+}; 
