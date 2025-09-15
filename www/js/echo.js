@@ -37,10 +37,15 @@ function ConnexionAuServeurWebsocket() {
 
 function ControleIHM() {
     document.getElementById('Envoyer').onclick = BPEnvoyer; //Bouton permettant d'envoyer le message. 
+
 }
 
 function BPEnvoyer() {
+
+
     ws.send(document.getElementById('messageEnvoi').value); //Envoi du message 
+    // JSON
+
 } 
 
 

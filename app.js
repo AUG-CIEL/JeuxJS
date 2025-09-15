@@ -66,6 +66,7 @@ class CQr {
         setTimeout(() => {
             this.NouvelleQuestion(); // Attente de 3 min avant de redonner une réponse 
         }, 3000);
+
     }
 }
 
@@ -156,10 +157,10 @@ exp.ws('/qr', function (ws, req) {
             req.connection.remoteAddress, req.connection.remotePort);
     });
 
+
+
+
+
+
+
 }); 
-
-
-
-
-
-
