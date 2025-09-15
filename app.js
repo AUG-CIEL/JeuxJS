@@ -71,3 +71,45 @@ aWss.broadcast = function broadcast(data) {
         }
     });
 }; 
+
+// QR 
+var question = '?';
+var bonneReponse = 0;
+
+// Connexion des clients a la WebSocket /qr et evenements associés 
+// Questions/reponses 
+exp.ws('/qr', function (ws, req) {
+    console.log('Connection WebSocket %s sur le port %s', // Connexion du websocket
+        req.connection.remoteAddress, req.connection.remotePort);
+    NouvelleQuestion(); //Ont pose la nouvelle question
+
+    ws.on('message', TraiterReponse);    // Traitement de la réponse
+
+    ws.on('close', function (reasonCode, description) {
+        console.log('Deconnexion WebSocket %s sur le port %s',
+            req.connection.remoteAddress, req.connection.remotePort);
+    });
+
+
+    function TraiterReponse(message) {
+        console.log('De %s %s, message :%s', req.connection.remoteAddress,
+            req.connection.remotePort, message);
+        if (message == bonneReponse) {
+            NouvelleQuestion();
+        }
+    }
+
+
+    function NouvelleQuestion() {
+        var x = GetRandomInt(11);  // Ont génère un nombre X aléatoire entre 0 et 11 
+        var y = GetRandomInt(11); // Ont génère un nombre  Y aléatoire entre 0 et 11 
+        question = x + '*' + y + ' =  ?'; // Question = x * y (par exemple 10 * 11 )
+        bonneReponse = x * y;   // calcul de la multiplication donner 
+        aWss.broadcast(question); 
+    }
+
+    function GetRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));   // Ont génère un chiffre aléatoire jusu'au max. 
+    }
+
+});
