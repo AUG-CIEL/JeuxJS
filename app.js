@@ -115,15 +115,35 @@ exp.ws('/qr', function (ws, req) {
 
     }
 
+    // Multipilication 
 
+ //   function NouvelleQuestion() {
+      //  var x = GetRandomInt(11);  // Ont génère un nombre X aléatoire entre 0 et 11 
+       // var y = GetRandomInt(11); // Ont génère un nombre  Y aléatoire entre 0 et 11 
+       // question = x + '*' + y + ' =  ?'; // Question = x * y (par exemple 10 * 11 )
+       // bonneReponse = x * y;   // calcul de la multiplication donner 
+   //     aWss.broadcast(question); 
+    // }
+
+
+    // base 2 : 
     function NouvelleQuestion() {
-        var x = GetRandomInt(11);  // Ont génère un nombre X aléatoire entre 0 et 11 
-        var y = GetRandomInt(11); // Ont génère un nombre  Y aléatoire entre 0 et 11 
-        question = x + '*' + y + ' =  ?'; // Question = x * y (par exemple 10 * 11 )
-        bonneReponse = x * y;   // calcul de la multiplication donner 
-        aWss.broadcast(question); 
-    }
+        // Tirer un entier aléatoire entre 0 et 255
+        var nombreDecimal = Math.floor(Math.random() * 256);
 
+        // Convertir en binaire sur 8 bits
+        var nombreBinaire = nombreDecimal.toString(2).padStart(8, '0');
+
+        // Créer la question
+        question =  nombreBinaire;
+
+
+        bonneReponse = nombreDecimal; // saisie la bonne réponse
+
+
+        aWss.broadcast(question); // Envoi de la question
+    }
+ 
     function GetRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));   // Ont génère un chiffre aléatoire jusu'au max. 
     }
