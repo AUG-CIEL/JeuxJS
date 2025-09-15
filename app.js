@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /*  *********************** Serveur Web ***************************   */// 
 'use strict';
 
@@ -91,12 +92,27 @@ exp.ws('/qr', function (ws, req) {
     });
 
 
+
     function TraiterReponse(message) {
         console.log('De %s %s, message :%s', req.connection.remoteAddress,
             req.connection.remotePort, message);
+
         if (message == bonneReponse) {
-            NouvelleQuestion();
-        }
+            ws.send(' => Bonne réponse !'); // Affichage "Bonne réponse"
+            //NouvelleQuestion();
+
+            
+        } else {
+            // Mauvaise réponse
+                  ws.send(' => Mauvaise réponse !'); // Affichage "Mauvaise réponse"
+             //attente de 3 secondes pour poser une question
+
+          
+        } 
+        setTimeout(() => {
+            NouvelleQuestion(); // Attente de 3 min avant de redonner une réponse 
+        }, 3000);
+
     }
 
 
@@ -111,5 +127,9 @@ exp.ws('/qr', function (ws, req) {
     function GetRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));   // Ont génère un chiffre aléatoire jusu'au max. 
     }
+
+
+
+
 
 });
